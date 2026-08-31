@@ -348,6 +348,7 @@ footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.
   *{animation:none!important;transition-duration:.01ms!important}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 
@@ -489,7 +490,7 @@ footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.
         </div>
       </div>
 
-      <div class="note"><b>Cardápio:</b> não precisa se preocupar agora. A gente monta junto no dia, na hora de dividir as compras e o fogo.</div>
+      <div class="note"><b>Cardápio:</b> não precisa se preocupar agora. Se tiver alguma restrição alimentar para alimentos naturais, comunique o Ernane.</div>
 
       <div class="err" id="e1"></div>
       <div class="actions"><button class="btn wide" type="button" id="go1">Concluir etapa 01 →</button></div>
@@ -606,12 +607,15 @@ footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.
       <a class="btn wide" href="https://chat.whatsapp.com/LvmyFrTvDLpDYkW1jCj3RK" target="_blank" rel="noopener">Entrar no grupo do WhatsApp</a>
 
       <div class="note" style="text-align:left">
-        <b>Antes de sair daqui:</b> mande no grupo o comprovante do Pix e o print da solicitação. Esta página não envia arquivos sozinha — ela guarda tudo só no seu aparelho.
+        <b>Está tudo registrado:</b> sua ficha, o comprovante do Pix e o print da solicitação já foram enviados e guardados. <b>Baixe o PDF abaixo e salve no celular</b> — é o seu comprovante de inscrição, com os anexos junto.
       </div>
 
       <div class="actions">
-        <button class="btn ghost" type="button" id="copyresumo">Copiar minha ficha</button>
-        <button class="btn ghost" type="button" id="baixar">Baixar ficha (.txt)</button>
+        <button class="btn wide" type="button" id="baixarPdf">Baixar meu comprovante em PDF</button>
+      </div>
+      <div class="err" id="ePdf"></div>
+      <div class="actions" style="margin-top:8px">
+        <button class="btn ghost" type="button" id="copyresumo">Copiar os dados da ficha</button>
       </div>
       <div class="summary" id="resumo"></div>
     </div>
@@ -627,7 +631,7 @@ footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.
 const SUPABASE = {
   url:    'https://tnpjoawcsdlmuewstsif.supabase.co',
   chave:  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRucGpvYXdjc2RsbXVld3N0c2lmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxMjY4NDcsImV4cCI6MjEwMzcwMjg0N30.0hHlRSYSNn6sTf58hL8qzjmiplDA2MYT7XF16QBHzSc',
-  funcao: 'hyper-service'   // Edge Function que recebe a ficha
+  funcao: 'api'   // Edge Function que recebe a ficha
 };
 const supabaseLigado = () => /^https:\/\/[a-z0-9]+\.supabase\.co$/.test(SUPABASE.url) && SUPABASE.chave.split('.').length === 3;
 
@@ -1193,12 +1197,136 @@ $('copyresumo').onclick = () => {
     .catch(() => {});
 };
 
-$('baixar').onclick = () => {
-  const b = new Blob([dados._txt], {type:'text/plain;charset=utf-8'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(b);
-  a.download = 'ficha-' + dados.nome.toLowerCase().replace(/\s+/g,'-') + '.txt';
-  a.click();
+/* ---------------- comprovante em PDF ---------------- */
+async function imagemParaJpeg(file, maxLado){
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((ok, falha) => {
+      const i = new Image();
+      i.onload = () => ok(i);
+      i.onerror = () => falha(new Error('imagem'));
+      i.src = url;
+    });
+    const r = Math.min(1, (maxLado || 1400) / Math.max(img.width, img.height));
+    const c = document.createElement('canvas');
+    c.width = Math.round(img.width * r);
+    c.height = Math.round(img.height * r);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    return { data: c.toDataURL('image/jpeg', 0.7), w: c.width, h: c.height };
+  } finally { URL.revokeObjectURL(url); }
+}
+
+async function geraPdf(){
+  const lib = window.jspdf && window.jspdf.jsPDF;
+  if (!lib) throw new Error('O gerador de PDF não carregou. Confira sua internet e tente de novo.');
+
+  const doc = new lib({ unit: 'mm', format: 'a4' });
+  const W = 210, H = 297, M = 18;
+
+  const fundo = () => { doc.setFillColor(10, 13, 10); doc.rect(0, 0, W, H, 'F'); };
+  const ember = () => doc.setTextColor(255, 106, 31);
+  const osso  = () => doc.setTextColor(243, 240, 230);
+  const aco   = () => doc.setTextColor(138, 154, 140);
+
+  // ---------- página 1 ----------
+  fundo();
+  doc.setFillColor(255, 106, 31); doc.rect(0, 0, W, 2.2, 'F');
+
+  ember(); doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+  doc.text('COMANDO 1C1613', M, 22, { charSpace: 1.2 });
+
+  osso(); doc.setFontSize(24);
+  doc.text('ESSÊNCIA DO GUERREIRO', M, 34);
+
+  ember(); doc.setFontSize(30);
+  doc.text('VAGA CONFIRMADA', M, 48);
+
+  // dog tag
+  const tagY = 58, tagH = 44;
+  doc.setFillColor(205, 211, 200);
+  doc.roundedRect(M, tagY, W - M * 2, tagH, 7, 7, 'F');
+  doc.setFillColor(10, 13, 10);
+  doc.circle(W - M - 10, tagY + 9, 2.4, 'F');
+
+  doc.setTextColor(60, 70, 59); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+  doc.text('PARTICIPANTE', M + 8, tagY + 11, { charSpace: 1.4 });
+
+  doc.setTextColor(14, 18, 12); doc.setFont('helvetica', 'bold'); doc.setFontSize(19);
+  doc.text(doc.splitTextToSize(dados.nome.toUpperCase(), W - M * 2 - 16)[0], M + 8, tagY + 22);
+
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(43, 51, 41);
+  doc.text('NASC ' + dados.nascimento + '     WPP ' + dados.whatsapp, M + 8, tagY + 31);
+  doc.text('EMERGÊNCIA ' + dados.emergencia, M + 8, tagY + 37);
+
+  // dados
+  let y = tagY + tagH + 16;
+  const linha = (rotulo, valor) => {
+    if (!valor) return;
+    aco(); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+    doc.text(rotulo.toUpperCase(), M, y, { charSpace: 1.1 });
+    osso(); doc.setFontSize(11);
+    const partes = doc.splitTextToSize(String(valor), W - M * 2);
+    doc.text(partes, M, y + 6);
+    y += 6 + partes.length * 5 + 6;
+    doc.setDrawColor(40, 48, 41); doc.line(M, y - 4, W - M, y - 4);
+  };
+
+  linha('E-mail', dados.email);
+  linha('Relacionamento', dados.relacionamento);
+  linha('Transporte', dados.transporte);
+  linha('Pagamento', 'Pix de R$ 95,00 · comprovante anexo neste PDF');
+  linha('SquadPray', 'Entrada solicitada · print anexo neste PDF');
+  if (arquivos.autorizacao) linha('Menor de idade', 'Termo de autorização assinado · anexo neste PDF');
+
+  const agora = new Date();
+  aco(); doc.setFontSize(8);
+  doc.text('Inscrição concluída em ' + agora.toLocaleDateString('pt-BR') + ' às ' + agora.toLocaleTimeString('pt-BR').slice(0, 5), M, H - 24);
+  doc.text('Guarde este arquivo no celular.', M, H - 18);
+
+  // ---------- páginas dos anexos ----------
+  const anexos = [
+    ['Comprovante do Pix', arquivos.comprovantePix],
+    ['Solicitação no SquadPray', arquivos.printSquad],
+    ['Termo de autorização assinado', arquivos.autorizacao]
+  ].filter(a => a[1]);
+
+  for (const [titulo, item] of anexos){
+    doc.addPage(); fundo();
+    doc.setFillColor(255, 106, 31); doc.rect(0, 0, W, 2.2, 'F');
+    ember(); doc.setFont('helvetica', 'bold'); doc.setFontSize(8);
+    doc.text('ANEXO', M, 20, { charSpace: 1.2 });
+    osso(); doc.setFontSize(17);
+    doc.text(titulo, M, 30);
+
+    let desenhou = false;
+    if (item.file.type && item.file.type.startsWith('image/')){
+      try {
+        const img = await imagemParaJpeg(item.file, 1400);
+        const caixaW = W - M * 2, caixaH = H - 56;
+        const r = Math.min(caixaW / img.w, caixaH / img.h);
+        const lw = img.w * r, lh = img.h * r;
+        doc.addImage(img.data, 'JPEG', (W - lw) / 2, 40, lw, lh);
+        desenhou = true;
+      } catch {}
+    }
+    if (!desenhou){
+      aco(); doc.setFont('helvetica', 'normal'); doc.setFontSize(11);
+      doc.text(doc.splitTextToSize(
+        'Arquivo enviado: ' + item.nome + '\n\nEste formato não pode ser exibido aqui, mas já está guardado no sistema junto com a sua inscrição.',
+        W - M * 2), M, 48);
+    }
+  }
+
+  doc.save('comprovante-' + slug(dados.nome) + '.pdf');
+}
+
+$('baixarPdf').onclick = async () => {
+  const box = $('ePdf'); limpaErro(box);
+  const btn = $('baixarPdf');
+  btn.disabled = true; btn.textContent = 'Montando o PDF...';
+  try { await geraPdf(); }
+  catch (err){ erro(box, err.message || 'Não deu para gerar o PDF.'); }
+  btn.disabled = false; btn.textContent = 'Baixar meu comprovante em PDF';
 };
 </script>
 </body>
