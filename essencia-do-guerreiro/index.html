@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ficha de Alistamento — Essência do Guerreiro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Archivo:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#0A0D0A;
+  --moss:#16211A;
+  --moss-2:#1F2E23;
+  --ember:#FF6A1F;
+  --ember-dim:#B8471065;
+  --ash:#CFD6CB;
+  --steel:#8A9A8C;
+  --bone:#F3F0E6;
+  --danger:#E0553B;
+  --ok:#7FC96B;
+  --edge:#FFFFFF1A;
+  --panel:#0B100C;
+  --display:"Big Shoulders Display","Haettenschweiler","Arial Narrow",sans-serif;
+  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--night);
+  color:var(--ash);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.55;
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- FUNDO: fotos e vídeos do rolê ---------- */
+#bg{position:fixed;inset:0;z-index:0;background:#050705;overflow:hidden;display:flex}
+#bg .pane{position:relative;flex:1;height:100%;overflow:hidden}
+#bg .pane + .pane{box-shadow:-1px 0 0 #00000059}
+#bg .slide{
+  position:absolute;inset:0;opacity:0;
+  transition:opacity 1.4s ease-in-out;
+  will-change:opacity;
+}
+#bg .slide.on{opacity:1}
+/* camada de trás: a mesma imagem desfocada, só para preencher as sobras */
+#bg .fill{
+  position:absolute;left:-8%;top:-8%;width:116%;height:116%;
+  object-fit:cover;display:block;
+  filter:blur(38px) brightness(.38) saturate(.9);
+  transform:scale(1.04);
+  animation:drift 26s ease-out forwards;
+}
+/* a foto inteira, sem corte */
+#bg .fit{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:contain;display:block;
+  filter:brightness(.72) contrast(1.02) saturate(.94);
+}
+@keyframes drift{from{transform:scale(1.04)}to{transform:scale(1.13) translate3d(-1.2%,-.8%,0)}}
+@media(max-width:760px){#bg .pane.dir{display:none}}
+#veil{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:
+    radial-gradient(135% 95% at 50% 0%, #0A0D0A00 0%, #0A0D0A1F 65%, #0A0D0A5C 100%),
+    linear-gradient(180deg,#0A0D0A47 0%, #0A0D0A0D 35%, #0A0D0A52 100%);
+}
+#grain{
+  position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.035;
+  background-image:radial-gradient(#fff 1px,transparent 1px);
+  background-size:3px 3px;mix-blend-mode:overlay;
+}
+
+/* ---------- ESTRUTURA ---------- */
+.wrap{position:relative;z-index:3;max-width:760px;margin:0 auto;padding:34px 18px 64px}
+
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.brand .mark{
+  width:38px;height:38px;flex:none;border:1.5px solid var(--ember);
+  display:grid;place-items:center;transform:rotate(45deg);
+}
+.brand .mark span{transform:rotate(-45deg);font-family:var(--display);font-weight:800;color:var(--ember);font-size:19px;line-height:1}
+.brand .txt{text-shadow:0 2px 12px #050705F2;font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--steel)}
+.brand .txt b{display:block;color:var(--bone);letter-spacing:.16em;font-weight:600}
+
+h1{
+  font-family:var(--display);font-weight:800;color:var(--bone);
+  text-shadow:0 4px 30px #050705,0 2px 6px #050705F2;
+  font-size:clamp(46px,11vw,86px);line-height:.86;letter-spacing:.005em;
+  text-transform:uppercase;margin:0 0 14px;
+}
+h1 em{font-style:normal;color:var(--ember);display:block}
+.lede{max-width:52ch;color:var(--bone);font-size:15.5px;margin:0 0 8px;text-shadow:0 2px 6px #050705,0 0 20px #050705}
+.lede strong{color:var(--bone);font-weight:600}
+
+/* aviso passo a passo */
+.order{
+  margin:22px 0 30px;border-left:2px solid var(--ember);
+  background:linear-gradient(90deg,#0A0D0ABF,#0A0D0A73 70%);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  padding:12px 16px;
+}
+.order p{margin:0;font-size:14.5px;color:var(--bone)}
+.order p span{font-family:var(--mono);color:var(--ember);font-size:12px;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:3px}
+
+/* ---------- PROGRESSO: dog tags ---------- */
+.tags{display:flex;align-items:stretch;gap:0;margin:0 0 26px;border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);background:#0A0D0A99;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(6px)}
+.tag{
+  flex:1;padding:13px 10px;display:flex;flex-direction:column;gap:3px;
+  border-right:1px solid var(--edge);opacity:.34;transition:opacity .3s, background .3s;
+}
+.tag:last-child{border-right:0}
+.tag b{font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--steel);font-weight:400}
+.tag i{font-family:var(--display);font-style:normal;font-weight:700;font-size:19px;line-height:1;letter-spacing:.02em;text-transform:uppercase;color:var(--bone)}
+.tag.active{opacity:1;background:linear-gradient(180deg,#FF6A1F1F,transparent)}
+.tag.active b{color:var(--ember)}
+.tag.done{opacity:.8}
+.tag.done b::after{content:" ✓";color:var(--ok)}
+
+/* ---------- PAINÉIS ---------- */
+.step{display:none}
+.step.on{display:block;animation:rise .45s cubic-bezier(.2,.7,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.panel{
+  background:linear-gradient(180deg,#0B100CA6,#070A07B8);
+  border:1px solid #FFFFFF26;
+  padding:24px 22px 26px;
+  backdrop-filter:blur(22px) saturate(.85) brightness(.75);
+  -webkit-backdrop-filter:blur(22px) saturate(.85) brightness(.75);
+  box-shadow:0 20px 60px #00000080;
+}
+.panel + .panel{margin-top:14px}
+.panel > h2{
+  font-family:var(--display);font-weight:700;text-transform:uppercase;color:var(--bone);
+  font-size:26px;line-height:1;margin:0 0 4px;letter-spacing:.01em;
+}
+.panel > .sub{font-size:13.5px;color:var(--steel);margin:0 0 20px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.full{grid-column:1/-1}
+@media(max-width:620px){.grid{grid-template-columns:1fr}}
+
+label{display:block}
+label .lb{
+  display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--steel);margin-bottom:6px;
+}
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=number],select,textarea{
+  width:100%;background:#050806B8;color:var(--bone);
+  border:1px solid #FFFFFF24;border-bottom:1.5px solid #FFFFFF3D;
+  padding:11px 12px;font-family:var(--body);font-size:15.5px;border-radius:0;
+  transition:border-color .2s,background .2s;
+}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--steel) 50%),linear-gradient(135deg,var(--steel) 50%,transparent 50%);background-position:calc(100% - 18px) 20px,calc(100% - 13px) 20px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ember);background:#0B0F0C}
+input::placeholder,textarea::placeholder{color:#6E7C70}
+input.bad,select.bad{border-color:var(--danger)}
+
+fieldset{border:1px solid var(--edge);padding:14px 14px 6px;margin:0}
+legend{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ember);padding:0 8px}
+
+.choice{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1px solid #FFFFFF1F;margin-bottom:8px;cursor:pointer;transition:border-color .2s,background .2s}
+.choice:hover{border-color:#FFFFFF40}
+.choice input{margin:3px 0 0;accent-color:var(--ember);flex:none}
+.choice span{font-size:14.8px;color:var(--ash)}
+.choice.sel{border-color:var(--ember);background:#FF6A1F12}
+.choice.sel span{color:var(--bone)}
+
+.hid{display:none}
+
+/* upload */
+.drop{
+  border:1.5px dashed #FFFFFF33;padding:20px 16px;text-align:center;cursor:pointer;
+  transition:border-color .2s,background .2s;
+}
+.drop:hover{border-color:var(--ember);background:#FF6A1F0D}
+.drop .big{font-family:var(--display);font-weight:700;font-size:20px;text-transform:uppercase;color:var(--bone);line-height:1.1}
+.drop .small{font-size:13px;color:var(--steel);margin-top:4px}
+.drop.filled{border-style:solid;border-color:var(--ok);background:#7FC96B0F}
+.preview{margin-top:12px;display:none}
+.preview.on{display:block}
+.preview img{max-width:100%;max-height:280px;display:block;border:1px solid var(--edge)}
+.preview .fname{font-family:var(--mono);font-size:12px;color:var(--ok);margin-top:8px;word-break:break-all}
+
+/* pix */
+.pix{display:flex;flex-wrap:wrap;align-items:center;gap:14px;border:1px solid var(--edge);padding:16px;background:#FF6A1F0A}
+.pix .val{font-family:var(--display);font-weight:800;font-size:44px;line-height:.9;color:var(--ember)}
+.pix .val small{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;color:var(--steel);font-weight:400}
+.pix .key{flex:1;min-width:200px}
+.pix .key code{display:block;font-family:var(--mono);font-size:14px;color:var(--bone);background:#05080699;border:1px solid var(--edge);padding:10px 12px;word-break:break-all}
+
+/* botões */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.03em;
+  font-size:21px;line-height:1;padding:15px 26px;border:0;cursor:pointer;
+  background:var(--ember);color:#120A04;transition:transform .12s ease,filter .2s;
+  text-decoration:none;border-radius:0;
+}
+.btn:hover{filter:brightness(1.12)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--bone);border:1px solid #FFFFFF33}
+.btn.ghost:hover{border-color:var(--ember);color:var(--ember)}
+.btn.wide{width:100%}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.actions .btn{flex:1;min-width:150px}
+
+.err{
+  display:none;margin-top:14px;border-left:2px solid var(--danger);padding:9px 13px;
+  background:#E0553B14;color:#F2B4A6;font-size:14px;
+}
+.err.on{display:block}
+
+.note{font-size:13.5px;color:var(--steel);margin-top:16px;border-top:1px solid var(--edge);padding-top:14px}
+.note b{color:var(--ash);font-weight:600}
+
+ol.route{list-style:none;counter-reset:r;padding:0;margin:0 0 20px}
+ol.route li{counter-increment:r;position:relative;padding:0 0 14px 40px;font-size:15px}
+ol.route li::before{
+  content:counter(r,decimal-leading-zero);position:absolute;left:0;top:1px;
+  font-family:var(--mono);font-size:12px;color:var(--ember);border:1px solid var(--ember);
+  width:26px;height:26px;display:grid;place-items:center;
+}
+ol.route li b{color:var(--bone)}
+.link-out{color:var(--ember);text-decoration:none;border-bottom:1px solid var(--ember-dim);word-break:break-all}
+.link-out:hover{border-bottom-color:var(--ember)}
+
+/* ---------- LIBERADO: dog tag ---------- */
+.dogtag{
+  position:relative;background:linear-gradient(150deg,#D8DCD5,#9AA69C 55%,#C6CDC2);
+  color:#10150F;padding:26px 26px 22px;border-radius:26px;max-width:430px;margin:0 auto 22px;
+  box-shadow:0 22px 50px #000000A6, inset 0 1px 0 #FFFFFFB0;
+}
+.dogtag::before{
+  content:"";position:absolute;top:14px;right:20px;width:15px;height:15px;border-radius:50%;
+  background:#0A0D0A;box-shadow:inset 0 2px 4px #000;
+}
+.dogtag .stamp{font-family:var(--mono);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#3C463B}
+.dogtag .nm{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:32px;line-height:.95;margin:6px 0 10px;color:#0E120C;word-break:break-word}
+.dogtag .rows{font-family:var(--mono);font-size:12px;color:#2B3329;line-height:1.9;border-top:1px solid #00000026;padding-top:8px}
+.dogtag .rows span{color:#59654F}
+
+.final-cta{text-align:center}
+h2.big{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(34px,8vw,54px);line-height:.9;color:var(--bone);margin:0 0 10px;text-align:center}
+h2.big em{font-style:normal;color:var(--ember)}
+
+.summary{
+  font-family:var(--mono);font-size:12.5px;color:var(--ash);background:#05080699;
+  border:1px solid var(--edge);padding:14px;white-space:pre-wrap;max-height:260px;overflow:auto;margin-top:16px;
+}
+footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#5D6A5F;text-align:center}
+
+/* ---------- PORTÃO DE ENTRADA ---------- */
+#portao{
+  position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:26px;
+  background:radial-gradient(80% 60% at 50% 45%,#0A0D0AC4,#050705F2);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  text-align:center;transition:opacity .7s ease;
+}
+#portao.sai{opacity:0;pointer-events:none}
+#portao .marca{
+  width:54px;height:54px;margin:0 auto 22px;border:1.5px solid var(--ember);
+  display:grid;place-items:center;transform:rotate(45deg);
+}
+#portao .marca span{transform:rotate(-45deg);font-family:var(--display);font-weight:800;color:var(--ember);font-size:26px;line-height:1}
+#portao .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--steel);margin-bottom:10px}
+#portao h2{
+  font-family:var(--display);font-weight:800;text-transform:uppercase;color:var(--bone);
+  font-size:clamp(40px,10vw,74px);line-height:.88;margin:0 0 20px;
+  text-shadow:0 4px 30px #050705;
+}
+#portao h2 em{font-style:normal;color:var(--ember);display:block}
+#portao small{display:block;margin-top:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--steel)}
+
+/* ---------- TRILHA ---------- */
+#som{
+  position:fixed;z-index:6;right:14px;bottom:14px;
+  display:flex;align-items:center;gap:10px;
+  background:#070A07D9;border:1px solid #FFFFFF2E;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  padding:8px 12px 8px 8px;box-shadow:0 12px 34px #000000A6;
+  max-width:calc(100vw - 28px);
+}
+#som button{
+  width:38px;height:38px;flex:none;border:0;cursor:pointer;border-radius:0;
+  background:var(--ember);color:#120A04;display:grid;place-items:center;
+  transition:filter .2s,background .2s,color .2s;
+}
+#som button:hover{filter:brightness(1.12)}
+#som button svg{width:18px;height:18px;fill:currentColor;display:block;pointer-events:none}
+#som.mute button{background:#FFFFFF1F;color:var(--steel)}
+#som .meta{display:flex;flex-direction:column;gap:4px;min-width:0}
+#som .nome{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--steel);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px;
+}
+#som.mute .nome{color:#5D6A5F}
+#som input[type=range]{
+  -webkit-appearance:none;appearance:none;width:110px;height:3px;background:#FFFFFF33;
+  outline:none;cursor:pointer;margin:0;
+}
+#som input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:13px;height:13px;background:var(--ember);
+  border:0;cursor:pointer;border-radius:50%;
+}
+#som input[type=range]::-moz-range-thumb{width:13px;height:13px;background:var(--ember);border:0;border-radius:50%;cursor:pointer}
+#som.mute input[type=range]::-webkit-slider-thumb{background:var(--steel)}
+#som.mute input[type=range]::-moz-range-thumb{background:var(--steel)}
+@media(max-width:520px){
+  #som{left:14px;right:14px;bottom:10px}
+  #som .nome{max-width:none}
+  #som input[type=range]{width:100%}
+  #som .meta{flex:1}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div id="bg"></div>
+<div id="veil"></div>
+<div id="grain"></div>
+
+<div id="portao">
+  <div>
+    <div class="marca"><span>EG</span></div>
+    <div class="eyebrow">Comando 1C1613</div>
+    <h2>Essência do<em>Guerreiro</em></h2>
+    <button class="btn" type="button" id="entrar">Abrir minha ficha</button>
+  </div>
+</div>
+
+<div id="som" class="mute" role="group" aria-label="Trilha sonora">
+  <button type="button" id="somBtn" aria-label="Silenciar a trilha"></button>
+  <div class="meta">
+    <div class="nome" id="somNome">Lion · Elevation Worship</div>
+    <input type="range" id="somVol" min="0" max="100" value="35" aria-label="Volume da trilha">
+  </div>
+</div>
+<audio id="audio" loop autoplay preload="auto" src="media/trilha.mp3"></audio>
+
+<div class="wrap">
+
+  <div class="brand">
+    <div class="mark"><span>EG</span></div>
+    <div class="txt">Comando 1C1613<b>Essência do Guerreiro</b></div>
+  </div>
+
+  <h1>Ficha de<em>Alistamento</em></h1>
+  <p class="lede">Preencha do começo ao fim. <strong>Cada etapa só abre quando a anterior estiver concluída</strong> — é assim que a gente confirma sua vaga no rolê.</p>
+
+  <div class="order">
+    <p><span>Regra da fila</span>Nada de pular etapa. Ficha → Pix → Plataforma → Grupo.</p>
+  </div>
+
+  <div class="tags">
+    <div class="tag active" data-tag="1"><b>Etapa 01</b><i>Seus dados</i></div>
+    <div class="tag" data-tag="2"><b>Etapa 02</b><i>Pix do rolê</i></div>
+    <div class="tag" data-tag="3"><b>Etapa 03</b><i>Plataforma</i></div>
+    <div class="tag" data-tag="4"><b>Etapa 04</b><i>Grupo</i></div>
+  </div>
+
+  <!-- ================= ETAPA 1 ================= -->
+  <section class="step on" id="s1">
+    <div class="panel">
+      <h2>Quem é você</h2>
+      <p class="sub">Tudo obrigatório. Nome completo, do jeito que está no documento.</p>
+
+      <div class="grid">
+        <label class="full"><span class="lb">Nome completo</span><input type="text" id="f_nome" placeholder="Nome e sobrenome"></label>
+        <input type="text" id="f_site" name="site" class="hid" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <label><span class="lb">Data de nascimento</span><input type="date" id="f_nasc"></label>
+        <label><span class="lb">WhatsApp</span><input type="tel" id="f_wpp" placeholder="(12) 99999-9999" inputmode="numeric"></label>
+        <label class="full"><span class="lb">E-mail</span><input type="email" id="f_email" placeholder="voce@email.com"></label>
+        <label><span class="lb">Relacionamento</span>
+          <select id="f_rel">
+            <option value="">Selecione</option>
+            <option>Solteiro</option>
+            <option>Namorando</option>
+            <option>Noivo</option>
+            <option>Casado</option>
+          </select>
+        </label>
+        <label id="wrap_par" class="hid"><span class="lb">Nome da pessoa</span><input type="text" id="f_par" placeholder="Nome dela"></label>
+      </div>
+    </div>
+
+    <div class="panel hid" id="painel_menor">
+      <h2>Autorização dos pais</h2>
+      <p class="sub">Pela data que você colocou, você tem menos de 18 anos. Então essa etapa é obrigatória.</p>
+
+      <ol class="route">
+        <li>Baixe o termo em Word no botão abaixo.</li>
+        <li>Preencha os dados do participante e do responsável.</li>
+        <li>Peça para seu <b>pai, mãe ou responsável legal assinar</b> à mão.</li>
+        <li>Tire uma foto legível ou digitalize a folha assinada.</li>
+        <li>Suba o arquivo aqui embaixo.</li>
+      </ol>
+
+      <a class="btn wide" id="baixarTermo" href="media/termo-autorizacao.docx" download="termo-autorizacao-essencia-do-guerreiro.docx" style="margin-bottom:18px">Baixar o termo em Word</a>
+
+      <div>
+        <span class="lb">Termo assinado</span>
+        <div class="drop" id="drop3">
+          <div class="big">Subir termo assinado</div>
+          <div class="small">Foto ou PDF da folha com a assinatura do responsável</div>
+        </div>
+        <input type="file" id="file3" accept="image/*,.pdf,.doc,.docx" class="hid">
+        <div class="preview" id="prev3"></div>
+      </div>
+
+      <div class="note">Sem o termo assinado a inscrição não é confirmada, mesmo com o Pix pago. Leve também a via impressa no dia.</div>
+    </div>
+
+    <div class="panel">
+      <h2>Contato de emergência</h2>
+      <p class="sub">Alguém que atenda o telefone às 3 da manhã. Não vale colocar você mesmo.</p>
+      <div class="grid">
+        <label><span class="lb">Nome</span><input type="text" id="f_emg_nome" placeholder="Quem avisamos"></label>
+        <label><span class="lb">Telefone</span><input type="tel" id="f_emg_tel" placeholder="(12) 99999-9999" inputmode="numeric"></label>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Como você chega lá</h2>
+      <p class="sub">A carona a gente monta com base nessas respostas.</p>
+
+      <label class="choice" data-group="car"><input type="radio" name="car" value="carro-com-vaga"><span><b>Vou de carro e tenho vaga</b> — posso levar gente.</span></label>
+      <label class="choice" data-group="car"><input type="radio" name="car" value="carro-sem-vaga"><span><b>Vou de carro, mas sem vaga</b> — carro cheio.</span></label>
+      <label class="choice" data-group="car"><input type="radio" name="car" value="carona"><span><b>Preciso de carona.</b></span></label>
+
+      <div id="wrap_vagas" class="hid" style="margin-top:12px">
+        <label><span class="lb">Quantos lugares sobram no seu carro</span><input type="number" id="f_vagas" min="1" max="8" placeholder="Ex.: 3"></label>
+      </div>
+      <div id="wrap_saida" class="hid" style="margin-top:12px">
+        <label><span class="lb">De onde você sai (bairro / cidade / ponto)</span><input type="text" id="f_saida" placeholder="Ex.: Jd. Aquarius, São José dos Campos"></label>
+      </div>
+
+      <div class="note"><b>Cardápio:</b> não precisa se preocupar agora. A gente monta junto no dia, na hora de dividir as compras e o fogo.</div>
+
+      <div class="err" id="e1"></div>
+      <div class="actions"><button class="btn wide" type="button" id="go1">Concluir etapa 01 →</button></div>
+    </div>
+  </section>
+
+  <!-- ================= ETAPA 2 ================= -->
+  <section class="step" id="s2">
+    <div class="panel">
+      <h2>Pix do rolê</h2>
+      <p class="sub">Valor fechado por pessoa. Pagou, sobe o comprovante aqui embaixo.</p>
+
+      <div class="order" style="margin:0 0 20px">
+        <p><span>Para onde vai o dinheiro</span>Esse valor cobre a diária do sítio e a nossa alimentação. Só isso. Não cobramos taxa, mensalidade nem nada por fora, e o rolê não arrecada fundo de espécie alguma — se sobrar, volta pro grupo. As caronas a gente organiza entre nós, sem custo.</p>
+      </div>
+
+      <div class="pix">
+        <div class="val">R$&nbsp;95<small>por pessoa</small></div>
+        <div class="key">
+          <span class="lb">Chave Pix</span>
+          <code id="pixkey">402.195.908-42</code>
+          <button class="btn ghost" type="button" id="copypix" style="margin-top:10px;font-size:15px;padding:9px 16px">Copiar chave</button>
+        </div>
+      </div>
+
+      <div style="margin-top:18px">
+        <span class="lb">Comprovante do Pix</span>
+        <div class="drop" id="drop1">
+          <div class="big">Subir comprovante</div>
+          <div class="small">Print ou PDF do Pix de R$ 95,00</div>
+        </div>
+        <input type="file" id="file1" accept="image/*,.pdf" class="hid">
+        <div class="preview" id="prev1"></div>
+      </div>
+
+      <div class="err" id="e2"></div>
+      <div class="actions">
+        <button class="btn ghost" type="button" data-back="1">← Voltar</button>
+        <button class="btn" type="button" id="go2">Concluir etapa 02 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ETAPA 3 ================= -->
+  <section class="step" id="s3">
+    <div class="panel">
+      <h2>Cadastro na plataforma</h2>
+      <p class="sub">É onde a gente acompanha a caminhada fora do acampamento. Sem isso, sem grupo.</p>
+
+      <ol class="route">
+        <li>Toque no botão abaixo: ele abre direto o squad <b>Essência do Guerreiro</b>.</li>
+        <li>Faça seu <b>cadastro</b> na plataforma, se ainda não tiver conta.</li>
+        <li>Na página do squad, toque em <b>solicitar entrada</b>.</li>
+        <li>Tire um <b>print da tela</b> mostrando a solicitação enviada.</li>
+      </ol>
+
+      <a class="btn wide" href="https://nprojeto.github.io/squadpray/squad/2f8e501d-6e07-4e18-8440-807bad9046a2" target="_blank" rel="noopener" style="margin-bottom:18px">Abrir o squad Essência do Guerreiro</a>
+
+      <div>
+        <span class="lb">Print da solicitação</span>
+        <div class="drop" id="drop2">
+          <div class="big">Subir print</div>
+          <div class="small">A tela mostrando que você solicitou entrada no squad</div>
+        </div>
+        <input type="file" id="file2" accept="image/*,.pdf" class="hid">
+        <div class="preview" id="prev2"></div>
+      </div>
+
+      <div class="err" id="e3"></div>
+      <div class="actions">
+        <button class="btn ghost" type="button" data-back="2">← Voltar</button>
+        <button class="btn" type="button" id="go3">Concluir etapa 03 →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ETAPA 4 ================= -->
+  <section class="step" id="s4">
+    <div class="panel final-cta">
+      <h2 class="big">Vaga <em>confirmada</em></h2>
+      <p class="sub" style="text-align:center">Bem-vindo à mata, guerreiro. Última coisa: entra no grupo.</p>
+
+      <div class="dogtag" id="tag">
+        <div class="stamp">Essência do Guerreiro</div>
+        <div class="nm" id="tag_nome">—</div>
+        <div class="rows" id="tag_rows"></div>
+      </div>
+
+      <a class="btn wide" href="https://chat.whatsapp.com/LvmyFrTvDLpDYkW1jCj3RK" target="_blank" rel="noopener">Entrar no grupo do WhatsApp</a>
+
+      <div class="note" style="text-align:left">
+        <b>Antes de sair daqui:</b> mande no grupo o comprovante do Pix e o print da solicitação. Esta página não envia arquivos sozinha — ela guarda tudo só no seu aparelho.
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" type="button" id="copyresumo">Copiar minha ficha</button>
+        <button class="btn ghost" type="button" id="baixar">Baixar ficha (.txt)</button>
+      </div>
+      <div class="summary" id="resumo"></div>
+    </div>
+  </section>
+
+  <footer>Essência do Guerreiro · Ficha de alistamento</footer>
+</div>
+
+<script>
+/* =========================================================
+   CONFIGURAÇÃO DO SUPABASE — preencha estas 2 linhas
+   ========================================================= */
+const SUPABASE = {
+  url:    'https://tnpjoawcsdlmuewstsif.supabase.co',
+  chave:  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRucGpvYXdjc2RsbXVld3N0c2lmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxMjY4NDcsImV4cCI6MjEwMzcwMjg0N30.0hHlRSYSNn6sTf58hL8qzjmiplDA2MYT7XF16QBHzSc',
+  funcao: 'inscricao'   // Edge Function que recebe a ficha
+};
+const supabaseLigado = () => /^https:\/\/[a-z0-9]+\.supabase\.co$/.test(SUPABASE.url) && SUPABASE.chave.split('.').length === 3;
+
+const MEDIA = [{"t": "i", "s": "media/foto01.jpg"}, {"t": "i", "s": "media/foto02.jpg"}, {"t": "v", "s": "media/video01.mp4"}, {"t": "i", "s": "media/foto03.jpg"}, {"t": "i", "s": "media/foto04.jpg"}, {"t": "v", "s": "media/video02.mp4"}, {"t": "i", "s": "media/foto05.jpg"}, {"t": "i", "s": "media/foto06.jpg"}, {"t": "v", "s": "media/video03.mp4"}, {"t": "i", "s": "media/foto07.jpg"}, {"t": "i", "s": "media/foto08.jpg"}, {"t": "v", "s": "media/video04.mp4"}, {"t": "i", "s": "media/foto09.jpg"}, {"t": "i", "s": "media/foto10.jpg"}, {"t": "v", "s": "media/video05.mp4"}];
+
+/* ---------------- fundo: dois painéis que trocam alternados ---------------- */
+(function(){
+  const bg = document.getElementById('bg');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const esq = document.createElement('div'); esq.className = 'pane esq';
+  const dir = document.createElement('div'); dir.className = 'pane dir';
+  bg.appendChild(esq); bg.appendChild(dir);
+
+  const atual = [null, null];
+  let i = -1, lado = 0;
+
+  function proximaMidia(){
+    i = (i + 1) % MEDIA.length;
+    return MEDIA[i];
+  }
+
+  function monta(m){
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+    if (m.t === 'v' && !reduce){
+      const fundo = document.createElement('video');
+      const v = document.createElement('video');
+      [fundo, v].forEach(el => {
+        el.muted = true; el.playsInline = true; el.setAttribute('playsinline','');
+        el.autoplay = true; el.loop = true; el.preload = 'auto'; el.src = m.s;
+        el.play().catch(()=>{});
+      });
+      fundo.className = 'fill'; v.className = 'fit';
+      slide.appendChild(fundo); slide.appendChild(v);
+    } else {
+      const src = m.t === 'v' ? MEDIA.find(x => x.t === 'i').s : m.s;
+      const fundo = document.createElement('img'); fundo.className = 'fill'; fundo.src = src;
+      const img = document.createElement('img'); img.className = 'fit'; img.src = src;
+      slide.appendChild(fundo); slide.appendChild(img);
+    }
+    return slide;
+  }
+
+  function troca(n){
+    const paneEl = n === 0 ? esq : dir;
+    const slide = monta(proximaMidia());
+    paneEl.appendChild(slide);
+    requestAnimationFrame(() => requestAnimationFrame(() => slide.classList.add('on')));
+    const velho = atual[n];
+    atual[n] = slide;
+    if (velho){ velho.classList.remove('on'); setTimeout(() => velho.remove(), 1600); }
+  }
+
+  function umPainelSo(){ return window.matchMedia('(max-width:760px)').matches; }
+
+  /* começa com as duas telas preenchidas */
+  troca(0);
+  if (!umPainelSo()) setTimeout(() => troca(1), 400);
+
+  /* daqui pra frente troca um lado de cada vez: direita, esquerda, direita... */
+  setInterval(() => {
+    if (umPainelSo()){ troca(0); return; }
+    if (!atual[1]) { troca(1); return; }
+    lado = lado ? 0 : 1;
+    troca(lado);
+  }, 5200);
+})();
+
+/* ---------------- trilha sonora ---------------- */
+(function(){
+  const a = document.getElementById('audio');
+  const box = document.getElementById('som');
+  const btn = document.getElementById('somBtn');
+  const vol = document.getElementById('somVol');
+  const nome = document.getElementById('somNome');
+  const TITULO = 'Lion · Elevation Worship';
+
+  const ALTO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 2.2v2.1a7.7 7.7 0 0 1 0 15.4v2.1A9.8 9.8 0 0 0 14 2.2z"/></svg>';
+  const MUDO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zm18-1.1L20.6 6.5 18.1 9l-2.5-2.5-1.4 1.4L16.7 10.4l-2.5 2.5 1.4 1.4 2.5-2.5 2.5 2.5 1.4-1.4-2.5-2.5 2.5-2.5z"/></svg>';
+
+  let ligado = true;              // o que o usuário escolheu
+  let ultimoVol = 0.35;
+  a.volume = ultimoVol;
+
+  function pinta(){
+    const soando = ligado && !a.muted && a.volume > 0;
+    btn.innerHTML = soando ? ALTO : MUDO;
+    box.classList.toggle('mute', !soando);
+    nome.textContent = soando ? TITULO : (a.muted ? 'Toque para ouvir' : 'Trilha silenciada');
+    btn.setAttribute('aria-label', soando ? 'Silenciar a trilha' : 'Ligar a trilha');
+  }
+
+  /* o portão de entrada garante o toque que os navegadores exigem para tocar com som */
+  const portao = document.getElementById('portao');
+  function abre(){
+    if (portao.classList.contains('sai')) return;
+    a.muted = false;
+    a.volume = ultimoVol;
+    a.play().catch(()=>{});
+    portao.classList.add('sai');
+    setTimeout(() => portao.remove(), 800);
+    pinta();
+  }
+  document.getElementById('entrar').onclick = abre;
+  portao.addEventListener('click', abre);
+
+  /* se o navegador já liberar o som sozinho, nem mostra o portão */
+  a.play().then(() => { if (!a.muted) setTimeout(abre, 250); pinta(); }).catch(() => {});
+
+  btn.onclick = () => {
+    if (ligado && !a.muted && a.volume > 0){
+      ligado = false;
+      ultimoVol = a.volume || ultimoVol;
+      a.pause();
+    } else {
+      ligado = true;
+      a.muted = false;
+      if (a.volume === 0){ a.volume = ultimoVol || 0.35; vol.value = Math.round(a.volume * 100); }
+      a.play().catch(()=>{});
+    }
+    pinta();
+  };
+
+  vol.addEventListener('input', () => {
+    a.volume = vol.value / 100;
+    if (a.volume > 0){ ultimoVol = a.volume; if (ligado){ a.muted = false; a.play().catch(()=>{}); } }
+    pinta();
+  });
+
+  a.addEventListener('play', pinta);
+  a.addEventListener('pause', pinta);
+  pinta();
+})();
+
+/* ---------------- utilitários ---------------- */
+const $ = id => document.getElementById(id);
+const dados = {};
+const arquivos = {};
+
+function maskTel(el){
+  el.addEventListener('input', () => {
+    let v = el.value.replace(/\D/g,'').slice(0,11);
+    if (v.length > 6) v = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
+    else if (v.length > 2) v = '(' + v.slice(0,2) + ') ' + v.slice(2);
+    else if (v.length > 0) v = '(' + v;
+    el.value = v;
+  });
+}
+maskTel($('f_wpp')); maskTel($('f_emg_tel'));
+
+function erro(box, msg){ box.textContent = msg; box.classList.add('on'); box.scrollIntoView({behavior:'smooth', block:'center'}); }
+function limpaErro(box){ box.classList.remove('on'); }
+
+function irPara(n){
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('on'));
+  $('s' + n).classList.add('on');
+  document.querySelectorAll('.tag').forEach(t => {
+    const k = +t.dataset.tag;
+    t.classList.toggle('active', k === n);
+    t.classList.toggle('done', k < n);
+  });
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.querySelectorAll('[data-back]').forEach(b => b.onclick = () => irPara(+b.dataset.back));
+
+/* menor de 18 anos abre o termo de autorização */
+function idade(iso){
+  if (!iso) return null;
+  const n = new Date(iso + 'T00:00:00');
+  if (isNaN(n)) return null;
+  const hoje = new Date();
+  let a = hoje.getFullYear() - n.getFullYear();
+  const m = hoje.getMonth() - n.getMonth();
+  if (m < 0 || (m === 0 && hoje.getDate() < n.getDate())) a--;
+  return a;
+}
+function ehMenor(){ const a = idade($('f_nasc').value); return a !== null && a < 18; }
+$('f_nasc').addEventListener('change', () => {
+  $('painel_menor').classList.toggle('hid', !ehMenor());
+});
+
+/* relacionamento abre campo do par */
+$('f_rel').addEventListener('change', e => {
+  const solteiro = e.target.value === 'Solteiro' || e.target.value === '';
+  $('wrap_par').classList.toggle('hid', solteiro);
+  if (solteiro) $('f_par').value = '';
+});
+
+/* transporte */
+document.querySelectorAll('input[name=car]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.querySelectorAll('.choice[data-group=car]').forEach(c => c.classList.toggle('sel', c.querySelector('input').checked));
+    const v = document.querySelector('input[name=car]:checked').value;
+    $('wrap_vagas').classList.toggle('hid', v !== 'carro-com-vaga');
+    $('wrap_saida').classList.toggle('hid', v !== 'carona');
+  });
+});
+
+/* ---------------- etapa 1 ---------------- */
+$('go1').onclick = () => {
+  const box = $('e1'); limpaErro(box);
+  const campos = [
+    ['f_nome','nome completo'], ['f_nasc','data de nascimento'], ['f_wpp','WhatsApp'],
+    ['f_email','e-mail'], ['f_rel','relacionamento'], ['f_emg_nome','nome do contato de emergência'], ['f_emg_tel','telefone de emergência']
+  ];
+  const faltando = [];
+  campos.forEach(([id, nome]) => {
+    const el = $(id), vazio = !el.value.trim();
+    el.classList.toggle('bad', vazio);
+    if (vazio) faltando.push(nome);
+  });
+
+  const rel = $('f_rel').value;
+  if (rel && rel !== 'Solteiro' && !$('f_par').value.trim()){ $('f_par').classList.add('bad'); faltando.push('nome da pessoa'); }
+
+  const car = document.querySelector('input[name=car]:checked');
+  if (!car) faltando.push('como você chega lá');
+  else if (car.value === 'carro-com-vaga' && !$('f_vagas').value){ $('f_vagas').classList.add('bad'); faltando.push('quantidade de lugares'); }
+  else if (car.value === 'carona' && !$('f_saida').value.trim()){ $('f_saida').classList.add('bad'); faltando.push('de onde você sai'); }
+
+  if (ehMenor() && !arquivos.autorizacao) faltando.push('termo de autorização assinado');
+
+  const email = $('f_email').value.trim();
+  if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ $('f_email').classList.add('bad'); faltando.push('e-mail válido'); }
+  if ($('f_wpp').value.replace(/\D/g,'').length < 10){ $('f_wpp').classList.add('bad'); if(!faltando.includes('WhatsApp')) faltando.push('WhatsApp completo com DDD'); }
+
+  if (faltando.length){ erro(box, 'Falta preencher: ' + faltando.join(', ') + '.'); return; }
+
+  dados.nome = $('f_nome').value.trim();
+  dados.nascimento = $('f_nasc').value.split('-').reverse().join('/');
+  dados.whatsapp = $('f_wpp').value;
+  dados.email = email;
+  dados.relacionamento = rel + (rel !== 'Solteiro' && $('f_par').value.trim() ? ' — ' + $('f_par').value.trim() : '');
+  dados.emergencia = $('f_emg_nome').value.trim() + ' · ' + $('f_emg_tel').value;
+  dados._nascISO = $('f_nasc').value;
+  dados._menor = ehMenor();
+  dados._rel = rel;
+  dados._par = $('f_par').value.trim();
+  dados._emgNome = $('f_emg_nome').value.trim();
+  dados._emgTel = $('f_emg_tel').value;
+  dados._carro = car.value;
+  dados._vagas = $('f_vagas').value ? parseInt($('f_vagas').value, 10) : null;
+  dados._saida = $('f_saida').value.trim();
+  dados.transporte = car.value === 'carro-com-vaga' ? 'De carro, com ' + $('f_vagas').value + ' lugar(es) sobrando'
+                   : car.value === 'carro-sem-vaga' ? 'De carro, sem vaga'
+                   : 'Precisa de carona — sai de ' + $('f_saida').value.trim();
+  irPara(2);
+};
+
+/* ---------------- uploads ---------------- */
+function ligaUpload(dropId, inputId, prevId, chave){
+  const drop = $(dropId), input = $(inputId), prev = $(prevId);
+  drop.onclick = () => input.click();
+  drop.ondragover = e => { e.preventDefault(); drop.style.borderColor = 'var(--ember)'; };
+  drop.ondragleave = () => drop.style.borderColor = '';
+  drop.ondrop = e => { e.preventDefault(); drop.style.borderColor=''; if (e.dataTransfer.files[0]) { input.files = e.dataTransfer.files; input.dispatchEvent(new Event('change')); } };
+  input.onchange = () => {
+    const f = input.files[0]; if (!f) return;
+    arquivos[chave] = { nome: f.name, file: f };
+    drop.classList.add('filled');
+    drop.querySelector('.big').textContent = 'Arquivo anexado';
+    drop.querySelector('.small').textContent = 'Toque para trocar';
+    prev.innerHTML = '';
+    if (f.type.startsWith('image/')){
+      const img = document.createElement('img'); img.src = URL.createObjectURL(f); prev.appendChild(img);
+    }
+    const n = document.createElement('div'); n.className = 'fname'; n.textContent = '✓ ' + f.name; prev.appendChild(n);
+    prev.classList.add('on');
+  };
+}
+ligaUpload('drop1','file1','prev1','comprovantePix');
+ligaUpload('drop2','file2','prev2','printSquad');
+ligaUpload('drop3','file3','prev3','autorizacao');
+
+$('copypix').onclick = () => {
+  navigator.clipboard.writeText($('pixkey').textContent.trim())
+    .then(() => { $('copypix').textContent = 'Chave copiada'; setTimeout(() => $('copypix').textContent = 'Copiar chave', 2200); })
+    .catch(() => {});
+};
+
+/* ---------------- envio para o Supabase ---------------- */
+async function salvaNoSupabase(){
+  const ficha = {
+    nome: dados.nome,
+    nascimento: dados._nascISO || null,
+    whatsapp: dados.whatsapp,
+    email: dados.email,
+    relacionamento: dados._rel,
+    parceiro: dados._par || null,
+    emergencia_nome: dados._emgNome,
+    emergencia_telefone: dados._emgTel,
+    transporte: dados._carro,
+    vagas_carro: dados._vagas,
+    saida: dados._saida || null
+  };
+
+  const fd = new FormData();
+  fd.append('ficha', JSON.stringify(ficha));
+  fd.append('site', $('f_site').value);   // armadilha para robô
+  if (arquivos.comprovantePix) fd.append('pix', arquivos.comprovantePix.file, arquivos.comprovantePix.nome);
+  if (arquivos.printSquad)     fd.append('squad', arquivos.printSquad.file, arquivos.printSquad.nome);
+  if (arquivos.autorizacao)    fd.append('autorizacao', arquivos.autorizacao.file, arquivos.autorizacao.nome);
+
+  let r;
+  try {
+    r = await fetch(SUPABASE.url + '/functions/v1/' + SUPABASE.funcao, {
+      method: 'POST',
+      headers: { apikey: SUPABASE.chave, Authorization: 'Bearer ' + SUPABASE.chave },
+      body: fd   // sem Content-Type: o navegador monta o limite do multipart
+    });
+  } catch {
+    throw new Error('Sua conexão caiu no meio do envio.');
+  }
+
+  let corpo = {};
+  try { corpo = await r.json(); } catch {}
+  if (!r.ok || corpo.erro) throw new Error(corpo.erro || ('Falha no envio (HTTP ' + r.status + ').'));
+}
+
+/* ---------------- etapas 2 e 3 ---------------- */
+$('go2').onclick = () => {
+  const box = $('e2'); limpaErro(box);
+  if (!arquivos.comprovantePix){ erro(box, 'Suba o comprovante do Pix de R$ 95,00 para seguir.'); return; }
+  irPara(3);
+};
+
+let tentativas = 0;
+$('go3').onclick = async () => {
+  const box = $('e3'); limpaErro(box);
+  const btn = $('go3');
+  if (!arquivos.printSquad){ erro(box, 'Suba o print mostrando a solicitação de entrada no squad Essência do Guerreiro.'); return; }
+
+  if (!supabaseLigado()){ montaResumo(); irPara(4); return; }
+
+  btn.disabled = true; btn.textContent = 'Enviando...';
+  try {
+    await salvaNoSupabase();
+    dados._salvo = true;
+  } catch (err){
+    tentativas++;
+    btn.disabled = false; btn.textContent = 'Concluir etapa 03 →';
+    if (tentativas < 2){
+      erro(box, err.message + ' Confira sua internet e toque de novo.');
+      return;
+    }
+    erro(box, 'Não deu para enviar automaticamente. Você segue para o grupo, mas mande sua ficha e os arquivos para a liderança no WhatsApp.');
+    dados._salvo = false;
+  }
+  btn.disabled = false; btn.textContent = 'Concluir etapa 03 →';
+  montaResumo();
+  irPara(4);
+};
+
+/* ---------------- final ---------------- */
+function montaResumo(){
+  $('tag_nome').textContent = dados.nome;
+  $('tag_rows').innerHTML =
+    '<span>NASC</span> ' + dados.nascimento + '<br>' +
+    '<span>WPP</span> ' + dados.whatsapp + '<br>' +
+    '<span>EMERG</span> ' + dados.emergencia;
+
+  const txt =
+'FICHA — ESSÊNCIA DO GUERREIRO\n' +
+'------------------------------\n' +
+'Nome: ' + dados.nome + '\n' +
+'Nascimento: ' + dados.nascimento + '\n' +
+'WhatsApp: ' + dados.whatsapp + '\n' +
+'E-mail: ' + dados.email + '\n' +
+'Relacionamento: ' + dados.relacionamento + '\n' +
+'Emergência: ' + dados.emergencia + '\n' +
+'Transporte: ' + dados.transporte + '\n' +
+(arquivos.autorizacao ? 'Menor de idade: termo assinado anexado (' + arquivos.autorizacao + ')\n' : '') +
+'Pix R$95: comprovante anexado (' + arquivos.comprovantePix + ')\n' +
+'Plataforma: solicitação enviada (' + arquivos.printSquad.nome + ')';
+  $('resumo').textContent = txt;
+  dados._txt = txt;
+  if (supabaseLigado() && dados._salvo === false){
+    const aviso = document.createElement('div');
+    aviso.className = 'err on';
+    aviso.style.textAlign = 'left';
+    aviso.textContent = 'Atenção: sua ficha não chegou ao sistema. Copie o resumo abaixo e mande no grupo junto com os comprovantes.';
+    $('resumo').parentNode.insertBefore(aviso, $('resumo'));
+  }
+}
+
+$('copyresumo').onclick = () => {
+  navigator.clipboard.writeText(dados._txt)
+    .then(() => { $('copyresumo').textContent = 'Ficha copiada'; setTimeout(() => $('copyresumo').textContent = 'Copiar minha ficha', 2200); })
+    .catch(() => {});
+};
+
+$('baixar').onclick = () => {
+  const b = new Blob([dados._txt], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  a.download = 'ficha-' + dados.nome.toLowerCase().replace(/\s+/g,'-') + '.txt';
+  a.click();
+};
+</script>
+</body>
+</html>
