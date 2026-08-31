@@ -256,6 +256,31 @@ h2.big em{font-style:normal;color:var(--ember)}
 }
 footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#5D6A5F;text-align:center}
 
+/* ---------- PROTOCOLO ---------- */
+.codigo{
+  font-family:var(--mono);font-weight:600;font-size:clamp(30px,8vw,44px);
+  letter-spacing:.12em;color:var(--ember);text-align:center;
+  border:1px dashed #FF6A1F80;background:#FF6A1F0F;padding:18px 12px;margin:6px 0 4px;
+  word-break:break-all;
+}
+.retomar{
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 26px;
+  border:1px solid var(--edge);background:#0A0D0A99;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);padding:10px 12px;
+}
+.retomar .lb2{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--steel);flex:none;
+}
+.retomar input{flex:1;min-width:130px;padding:8px 10px;font-family:var(--mono);text-transform:uppercase;font-size:14px}
+.retomar button{padding:9px 16px;font-size:15px}
+.carro{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border:1px solid #FFFFFF1F;margin-bottom:8px;cursor:pointer}
+.carro:hover{border-color:#FFFFFF40}
+.carro input{margin:3px 0 0;accent-color:var(--ember);flex:none}
+.carro b{color:var(--bone);font-weight:600}
+.carro small{display:block;color:var(--steel);font-size:12.5px;margin-top:2px}
+.carro.sel{border-color:var(--ember);background:#FF6A1F12}
+
 /* ---------- PORTÃO DE ENTRADA ---------- */
 #portao{
   position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:26px;
@@ -359,13 +384,20 @@ footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.
   <p class="lede">Preencha do começo ao fim. <strong>Cada etapa só abre quando a anterior estiver concluída</strong> — é assim que a gente confirma sua vaga no rolê.</p>
 
   <div class="order">
-    <p><span>Regra da fila</span>Nada de pular etapa. Ficha → Pix → Plataforma → Grupo.</p>
+    <p><span>Regra da fila</span>Nada de pular etapa. Ficha → Pix → SquadPray → Grupo.</p>
   </div>
+
+  <div class="retomar">
+    <span class="lb2">Já tem protocolo?</span>
+    <input type="text" id="f_protocolo" placeholder="EG-XXXXXX" maxlength="9" autocomplete="off">
+    <button class="btn ghost" type="button" id="btnRetomar">Continuar</button>
+  </div>
+  <div class="err" id="eRet" style="margin:-18px 0 22px"></div>
 
   <div class="tags">
     <div class="tag active" data-tag="1"><b>Etapa 01</b><i>Seus dados</i></div>
     <div class="tag" data-tag="2"><b>Etapa 02</b><i>Pix do rolê</i></div>
-    <div class="tag" data-tag="3"><b>Etapa 03</b><i>Plataforma</i></div>
+    <div class="tag" data-tag="3"><b>Etapa 03</b><i>SquadPray</i></div>
     <div class="tag" data-tag="4"><b>Etapa 04</b><i>Grupo</i></div>
   </div>
 
@@ -445,6 +477,18 @@ footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.
         <label><span class="lb">De onde você sai (bairro / cidade / ponto)</span><input type="text" id="f_saida" placeholder="Ex.: Jd. Aquarius, São José dos Campos"></label>
       </div>
 
+      <div id="wrap_carona" class="hid" style="margin-top:18px">
+        <span class="lb">Reserve seu lugar</span>
+        <div id="carona_status" style="font-size:14px;color:var(--steel)">Procurando carros com lugar sobrando...</div>
+        <div id="carona_lista"></div>
+        <div id="carona_vazio" class="hid">
+          <div class="order" style="margin:0">
+            <p><span>Nenhum carro com vaga</span>Ninguém com lugar sobrando se cadastrou ainda, então não dá para seguir agora. Guarde sua ficha, receba um protocolo e volte mais tarde para escolher um carro.</p>
+          </div>
+          <button class="btn wide" type="button" id="btnProtocolo" style="margin-top:14px">Guardar minha ficha e gerar protocolo</button>
+        </div>
+      </div>
+
       <div class="note"><b>Cardápio:</b> não precisa se preocupar agora. A gente monta junto no dia, na hora de dividir as compras e o fogo.</div>
 
       <div class="err" id="e1"></div>
@@ -492,12 +536,12 @@ footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.
   <!-- ================= ETAPA 3 ================= -->
   <section class="step" id="s3">
     <div class="panel">
-      <h2>Cadastro na plataforma</h2>
+      <h2>Cadastro no SquadPray</h2>
       <p class="sub">É onde a gente acompanha a caminhada fora do acampamento. Sem isso, sem grupo.</p>
 
       <ol class="route">
         <li>Toque no botão abaixo: ele abre direto o squad <b>Essência do Guerreiro</b>.</li>
-        <li>Faça seu <b>cadastro</b> na plataforma, se ainda não tiver conta.</li>
+        <li>Faça seu <b>cadastro</b> no SquadPray, se ainda não tiver conta.</li>
         <li>Na página do squad, toque em <b>solicitar entrada</b>.</li>
         <li>Tire um <b>print da tela</b> mostrando a solicitação enviada.</li>
       </ol>
@@ -519,6 +563,31 @@ footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.
         <button class="btn ghost" type="button" data-back="2">← Voltar</button>
         <button class="btn" type="button" id="go3">Concluir etapa 03 →</button>
       </div>
+    </div>
+  </section>
+
+  <!-- ================= FICHA GUARDADA ================= -->
+  <section class="step" id="sProt">
+    <div class="panel">
+      <h2>Ficha guardada</h2>
+      <p class="sub">Sua inscrição ficou reservada. Falta só um carro com lugar sobrando.</p>
+
+      <div class="codigo" id="prot_codigo">—</div>
+      <p style="text-align:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--steel);margin:0 0 20px">Seu protocolo</p>
+
+      <ol class="route">
+        <li>Anote ou copie esse código. Ele é a sua ficha.</li>
+        <li>Fique de olho no grupo: quando alguém com carro se cadastrar, avisamos.</li>
+        <li>Volte nesta página, cole o código em <b>"Já tem protocolo?"</b> e toque em Continuar.</li>
+        <li>Escolha o carro e siga para o Pix.</li>
+      </ol>
+
+      <div class="actions">
+        <button class="btn" type="button" id="copiaProt">Copiar protocolo</button>
+        <button class="btn ghost" type="button" id="voltaProt">Voltar para a ficha</button>
+      </div>
+
+      <div class="note">Enquanto não houver carro, não faça o Pix. Sua vaga no rolê só é confirmada depois de todas as etapas.</div>
     </div>
   </section>
 
@@ -558,7 +627,7 @@ footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.
 const SUPABASE = {
   url:    'https://tnpjoawcsdlmuewstsif.supabase.co',
   chave:  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRucGpvYXdjc2RsbXVld3N0c2lmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxMjY4NDcsImV4cCI6MjEwMzcwMjg0N30.0hHlRSYSNn6sTf58hL8qzjmiplDA2MYT7XF16QBHzSc',
-  funcao: 'inscricao'   // Edge Function que recebe a ficha
+  funcao: 'api'   // Edge Function que recebe a ficha
 };
 const supabaseLigado = () => /^https:\/\/[a-z0-9]+\.supabase\.co$/.test(SUPABASE.url) && SUPABASE.chave.split('.').length === 3;
 
@@ -753,16 +822,154 @@ document.querySelectorAll('input[name=car]').forEach(r => {
     document.querySelectorAll('.choice[data-group=car]').forEach(c => c.classList.toggle('sel', c.querySelector('input').checked));
     const v = document.querySelector('input[name=car]:checked').value;
     $('wrap_vagas').classList.toggle('hid', v !== 'carro-com-vaga');
-    $('wrap_saida').classList.toggle('hid', v !== 'carona');
+    $('wrap_saida').classList.toggle('hid', v === 'carro-sem-vaga');
+    $('wrap_carona').classList.toggle('hid', v !== 'carona');
+    if (v === 'carona') carregaVagas();
   });
 });
 
+/* ---------------- caronas ---------------- */
+function apiUrl(qs){ return SUPABASE.url + '/functions/v1/' + SUPABASE.funcao + (qs || ''); }
+const apiHeaders = { apikey: SUPABASE.chave, Authorization: 'Bearer ' + SUPABASE.chave };
+
+let carrosDisponiveis = [];
+
+async function carregaVagas(){
+  const box = $('carona_status'), lista = $('carona_lista'), vazio = $('carona_vazio');
+  lista.innerHTML = ''; vazio.classList.add('hid');
+  box.style.display = ''; box.textContent = 'Procurando carros com lugar sobrando...';
+
+  if (!supabaseLigado()){ box.textContent = 'Modo de teste: a lista de carros só funciona com o sistema ligado.'; return; }
+
+  try {
+    const r = await fetch(apiUrl('?acao=vagas'), { headers: apiHeaders });
+    const j = await r.json();
+    carrosDisponiveis = j.carros || [];
+  } catch {
+    box.textContent = 'Não deu para consultar os carros. Confira sua internet e escolha a opção de novo.';
+    return;
+  }
+
+  if (!carrosDisponiveis.length){
+    box.style.display = 'none';
+    vazio.classList.remove('hid');
+    return;
+  }
+
+  box.style.display = 'none';
+  carrosDisponiveis.forEach((c, i) => {
+    const l = document.createElement('label');
+    l.className = 'carro';
+    l.innerHTML = '<input type="radio" name="motorista" value="' + c.id + '">' +
+      '<span><b>' + c.nome + '</b>' +
+      '<small>' + (c.saida ? 'Sai de ' + c.saida + ' · ' : '') +
+      c.livres + (c.livres === 1 ? ' lugar livre' : ' lugares livres') + '</small></span>';
+    l.querySelector('input').addEventListener('change', () => {
+      document.querySelectorAll('.carro').forEach(x => x.classList.toggle('sel', x.querySelector('input').checked));
+    });
+    lista.appendChild(l);
+  });
+}
+
+/* junta os dados da etapa 1 num objeto para mandar ao servidor */
+function fichaAtual(){
+  const car = document.querySelector('input[name=car]:checked');
+  const rel = $('f_rel').value;
+  return {
+    nome: $('f_nome').value.trim(),
+    nascimento: $('f_nasc').value,
+    whatsapp: $('f_wpp').value,
+    email: $('f_email').value.trim(),
+    relacionamento: rel,
+    parceiro: rel !== 'Solteiro' ? $('f_par').value.trim() : null,
+    emergencia_nome: $('f_emg_nome').value.trim(),
+    emergencia_telefone: $('f_emg_tel').value,
+    transporte: car ? car.value : null,
+    vagas_carro: $('f_vagas').value ? parseInt($('f_vagas').value, 10) : null,
+    saida: $('f_saida').value.trim() || null
+  };
+}
+
+/* guarda a ficha e devolve um protocolo */
+$('btnProtocolo').onclick = async () => {
+  const box = $('e1'); limpaErro(box);
+  if (!validaEtapa1({ ignoraCarona: true })) return;
+
+  const btn = $('btnProtocolo');
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  try {
+    const fd = new FormData();
+    fd.append('acao', 'presalvar');
+    fd.append('ficha', JSON.stringify(fichaAtual()));
+    fd.append('site', $('f_site').value);
+    const r = await fetch(apiUrl(), { method: 'POST', headers: apiHeaders, body: fd });
+    const j = await r.json();
+    if (!r.ok || j.erro) throw new Error(j.erro || 'Falha ao guardar.');
+    $('prot_codigo').textContent = j.protocolo;
+    dados._protocolo = j.protocolo;
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('on'));
+    $('sProt').classList.add('on');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err){
+    erro(box, err.message);
+  }
+  btn.disabled = false; btn.textContent = 'Guardar minha ficha e gerar protocolo';
+};
+
+$('copiaProt').onclick = () => {
+  navigator.clipboard.writeText($('prot_codigo').textContent.trim())
+    .then(() => { $('copiaProt').textContent = 'Copiado'; setTimeout(() => $('copiaProt').textContent = 'Copiar protocolo', 2200); })
+    .catch(() => {});
+};
+$('voltaProt').onclick = () => irPara(1);
+
+/* retomar uma ficha guardada */
+$('btnRetomar').onclick = async () => {
+  const box = $('eRet'); limpaErro(box);
+  const codigo = $('f_protocolo').value.trim().toUpperCase();
+  if (!/^EG-[A-Z0-9]{6}$/.test(codigo)){ erro(box, 'O protocolo tem o formato EG-XXXXXX.'); return; }
+  if (!supabaseLigado()){ erro(box, 'O sistema não está ligado neste arquivo.'); return; }
+
+  const btn = $('btnRetomar');
+  btn.disabled = true; btn.textContent = 'Buscando...';
+  try {
+    const r = await fetch(apiUrl('?acao=retomar&protocolo=' + encodeURIComponent(codigo)), { headers: apiHeaders });
+    const j = await r.json();
+    if (!r.ok || j.erro) throw new Error(j.erro || 'Não encontramos esse protocolo.');
+    preenche(j.ficha);
+    dados._protocolo = codigo;
+    irPara(1);
+  } catch (err){
+    erro(box, err.message);
+  }
+  btn.disabled = false; btn.textContent = 'Continuar';
+};
+
+function preenche(f){
+  $('f_nome').value = f.nome || '';
+  $('f_nasc').value = f.nascimento || '';
+  $('f_wpp').value = f.whatsapp || '';
+  $('f_email').value = f.email || '';
+  $('f_rel').value = f.relacionamento || '';
+  $('f_rel').dispatchEvent(new Event('change'));
+  if (f.parceiro) $('f_par').value = f.parceiro;
+  $('f_emg_nome').value = f.emergencia_nome || '';
+  $('f_emg_tel').value = f.emergencia_telefone || '';
+  $('f_nasc').dispatchEvent(new Event('change'));
+  const alvo = document.querySelector('input[name=car][value="' + (f.transporte || '') + '"]');
+  if (alvo){ alvo.checked = true; alvo.dispatchEvent(new Event('change')); }
+  if (f.vagas_carro) $('f_vagas').value = f.vagas_carro;
+  if (f.saida) $('f_saida').value = f.saida;
+}
+
 /* ---------------- etapa 1 ---------------- */
-$('go1').onclick = () => {
+function validaEtapa1(opc){
+  opc = opc || {};
   const box = $('e1'); limpaErro(box);
   const campos = [
     ['f_nome','nome completo'], ['f_nasc','data de nascimento'], ['f_wpp','WhatsApp'],
-    ['f_email','e-mail'], ['f_rel','relacionamento'], ['f_emg_nome','nome do contato de emergência'], ['f_emg_tel','telefone de emergência']
+    ['f_email','e-mail'], ['f_rel','relacionamento'],
+    ['f_emg_nome','nome do contato de emergência'], ['f_emg_tel','telefone de emergência']
   ];
   const faltando = [];
   campos.forEach(([id, nome]) => {
@@ -776,7 +983,10 @@ $('go1').onclick = () => {
 
   const car = document.querySelector('input[name=car]:checked');
   if (!car) faltando.push('como você chega lá');
-  else if (car.value === 'carro-com-vaga' && !$('f_vagas').value){ $('f_vagas').classList.add('bad'); faltando.push('quantidade de lugares'); }
+  else if (car.value === 'carro-com-vaga'){
+    if (!$('f_vagas').value){ $('f_vagas').classList.add('bad'); faltando.push('quantidade de lugares'); }
+    if (!$('f_saida').value.trim()){ $('f_saida').classList.add('bad'); faltando.push('de onde você sai'); }
+  }
   else if (car.value === 'carona' && !$('f_saida').value.trim()){ $('f_saida').classList.add('bad'); faltando.push('de onde você sai'); }
 
   if (ehMenor() && !arquivos.autorizacao) faltando.push('termo de autorização assinado');
@@ -785,26 +995,56 @@ $('go1').onclick = () => {
   if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ $('f_email').classList.add('bad'); faltando.push('e-mail válido'); }
   if ($('f_wpp').value.replace(/\D/g,'').length < 10){ $('f_wpp').classList.add('bad'); if(!faltando.includes('WhatsApp')) faltando.push('WhatsApp completo com DDD'); }
 
-  if (faltando.length){ erro(box, 'Falta preencher: ' + faltando.join(', ') + '.'); return; }
+  if (faltando.length){ erro(box, 'Falta preencher: ' + faltando.join(', ') + '.'); return false; }
+
+  /* quem depende de carona só passa com um lugar reservado */
+  if (!opc.ignoraCarona && car.value === 'carona'){
+    const escolhido = document.querySelector('input[name=motorista]:checked');
+    if (!escolhido){
+      if (carrosDisponiveis.length){
+        erro(box, 'Escolha em qual carro você vai antes de seguir.');
+      } else {
+        erro(box, 'Ainda não há carro com lugar sobrando. Guarde sua ficha no botão acima e volte com o protocolo quando aparecer vaga.');
+      }
+      return false;
+    }
+    dados._motoristaId = escolhido.value;
+  } else {
+    dados._motoristaId = null;
+  }
+  return true;
+}
+
+$('go1').onclick = () => {
+  if (!validaEtapa1()) return;
+
+  const rel = $('f_rel').value;
+  const car = document.querySelector('input[name=car]:checked');
 
   dados.nome = $('f_nome').value.trim();
-  dados.nascimento = $('f_nasc').value.split('-').reverse().join('/');
-  dados.whatsapp = $('f_wpp').value;
-  dados.email = email;
-  dados.relacionamento = rel + (rel !== 'Solteiro' && $('f_par').value.trim() ? ' — ' + $('f_par').value.trim() : '');
-  dados.emergencia = $('f_emg_nome').value.trim() + ' · ' + $('f_emg_tel').value;
   dados._nascISO = $('f_nasc').value;
+  dados.nascimento = $('f_nasc').value.split('-').reverse().join('/');
   dados._menor = ehMenor();
+  dados.whatsapp = $('f_wpp').value;
+  dados.email = $('f_email').value.trim();
   dados._rel = rel;
   dados._par = $('f_par').value.trim();
+  dados.relacionamento = rel + (rel !== 'Solteiro' && dados._par ? ' — ' + dados._par : '');
   dados._emgNome = $('f_emg_nome').value.trim();
   dados._emgTel = $('f_emg_tel').value;
+  dados.emergencia = dados._emgNome + ' · ' + dados._emgTel;
   dados._carro = car.value;
   dados._vagas = $('f_vagas').value ? parseInt($('f_vagas').value, 10) : null;
   dados._saida = $('f_saida').value.trim();
-  dados.transporte = car.value === 'carro-com-vaga' ? 'De carro, com ' + $('f_vagas').value + ' lugar(es) sobrando'
-                   : car.value === 'carro-sem-vaga' ? 'De carro, sem vaga'
-                   : 'Precisa de carona — sai de ' + $('f_saida').value.trim();
+
+  if (car.value === 'carro-com-vaga'){
+    dados.transporte = 'De carro, com ' + dados._vagas + ' lugar(es) para oferecer · sai de ' + dados._saida;
+  } else if (car.value === 'carro-sem-vaga'){
+    dados.transporte = 'De carro, sem vaga';
+  } else {
+    const c = carrosDisponiveis.find(x => x.id === dados._motoristaId);
+    dados.transporte = 'Carona com ' + (c ? c.nome : 'motorista confirmado') + ' · sai de ' + dados._saida;
+  }
   irPara(2);
 };
 
@@ -852,10 +1092,13 @@ async function salvaNoSupabase(){
     emergencia_telefone: dados._emgTel,
     transporte: dados._carro,
     vagas_carro: dados._vagas,
-    saida: dados._saida || null
+    saida: dados._saida || null,
+    motorista_id: dados._motoristaId || null,
+    protocolo: dados._protocolo || null
   };
 
   const fd = new FormData();
+  fd.append('acao', 'inscrever');
   fd.append('ficha', JSON.stringify(ficha));
   fd.append('site', $('f_site').value);   // armadilha para robô
   if (arquivos.comprovantePix) fd.append('pix', arquivos.comprovantePix.file, arquivos.comprovantePix.nome);
@@ -932,7 +1175,7 @@ function montaResumo(){
 'Transporte: ' + dados.transporte + '\n' +
 (arquivos.autorizacao ? 'Menor de idade: termo assinado anexado (' + arquivos.autorizacao + ')\n' : '') +
 'Pix R$95: comprovante anexado (' + arquivos.comprovantePix + ')\n' +
-'Plataforma: solicitação enviada (' + arquivos.printSquad.nome + ')';
+'SquadPray: solicitação enviada (' + arquivos.printSquad.nome + ')';
   $('resumo').textContent = txt;
   dados._txt = txt;
   if (supabaseLigado() && dados._salvo === false){
