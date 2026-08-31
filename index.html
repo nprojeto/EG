@@ -627,7 +627,7 @@ footer{margin-top:30px;font-family:var(--mono);font-size:10.5px;letter-spacing:.
 const SUPABASE = {
   url:    'https://tnpjoawcsdlmuewstsif.supabase.co',
   chave:  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRucGpvYXdjc2RsbXVld3N0c2lmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgxMjY4NDcsImV4cCI6MjEwMzcwMjg0N30.0hHlRSYSNn6sTf58hL8qzjmiplDA2MYT7XF16QBHzSc',
-  funcao: 'api'   // Edge Function que recebe a ficha
+  funcao: 'hyper-service'   // Edge Function que recebe a ficha
 };
 const supabaseLigado = () => /^https:\/\/[a-z0-9]+\.supabase\.co$/.test(SUPABASE.url) && SUPABASE.chave.split('.').length === 3;
 
